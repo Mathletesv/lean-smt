@@ -72,10 +72,35 @@ def natLitOf? (e : Expr) (α : Expr) : Option Nat :=
   else
     none
 
+def zeroOf? (e : Expr) (α : Expr) : Option Unit :=
+  let_expr Zero.zero β _ := e | none
+  if β.consumeMData == α then return () else none
+
+def oneOf? (e : Expr) (α : Expr) : Option Unit :=
+  let_expr One.one β _ := e | none
+  if β.consumeMData == α then return () else none
+
+def natCastOf? (e : Expr) (α : Expr) : Option Expr :=
+  let_expr Nat.cast β _ x := e | none
+  if β.consumeMData == α then
+    return x
+  else
+    none
+
 def intCastOf? (e : Expr) (α : Expr) : Option Expr :=
   let_expr Int.cast β _ x := e | none
   if β.consumeMData == α then
     return x
+  else
+    none
+
+def ofScientificOf? (e : Expr) (α : Expr) : Option (Nat × Bool × Nat) := do
+  let some (β, _, m, s, exp) := e.app5? ``OfScientific.ofScientific | none
+  if β.consumeMData == α then
+    let some mv := m.natLitOf? (.const ``Nat []) | none
+    let some ev := exp.natLitOf? (.const ``Nat []) | none
+    let sgn := s.isConstOf ``Bool.true
+    return (mv, sgn, ev)
   else
     none
 

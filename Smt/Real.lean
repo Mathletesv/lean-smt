@@ -10,3 +10,4 @@ import Smt.Preprocess.Normalize.Rat
 import Smt.Preprocess.Normalize.Real
 import Smt.Reconstruct.Real
 import Smt.Translate.Real
+import Auto.MathlibReal
