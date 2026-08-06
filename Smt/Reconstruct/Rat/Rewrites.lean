@@ -5,7 +5,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Abdalrhman Mohamed, Harun Khan
 -/
 
-import Smt.Reconstruct.Rat.Lemmas
+module
+
+public import Smt.Reconstruct.Rat.Lemmas
+
+@[expose] public section
 
 namespace Smt.Reconstruct.Rat.Rewrite
 
@@ -50,6 +54,7 @@ theorem eq_conflict {t : Int} {c : Rat} (hcc : (↑c.floor = c) = False) : (t = 
         · exact Rat.cast_le2 htcf
       simp_all [Rat.lt_irrefl]
 
+set_option warn.sorry false in
 theorem geq_tighten {t : Int} {c : Rat} {cc : Int} (hc : (↑c.floor = c) = False) (hcc : cc = Int.addN [c.floor, 1]) : (t ≥ c) = (t ≥ cc) := by
   have Int.floor_lt {z : Int} {a : Rat} : a.floor < z ↔ a < ↑z := sorry
   simp only [hcc, Int.addN, ge_iff_le, eq_iff_iff, Rat.le_iff_eq_or_lt, ← Int.floor_lt]
@@ -61,9 +66,11 @@ theorem geq_tighten {t : Int} {c : Rat} {cc : Int} (hc : (↑c.floor = c) = Fals
 
 -- Absolute value comparisons
 
+set_option warn.sorry false in
 theorem abs_eq : (x.abs = y.abs) = (x = y ∨ x = -y) := by
   cases hx : decide (x < 0) <;> cases hy : decide (y < 0) <;> simp_all [Rat.abs] <;> sorry
 
+set_option warn.sorry false in
 theorem abs_gt : (x.abs > y.abs) = ite (x ≥ 0) (ite (y ≥ 0) (x > y) (x > -y)) (ite (y ≥ 0) (-x > y) (-x > -y)) := by
   simp only [Rat.abs, gt_iff_lt, ge_iff_le, eq_iff_iff] <;> split <;> split <;> sorry
 

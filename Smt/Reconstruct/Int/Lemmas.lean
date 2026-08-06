@@ -5,13 +5,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Tomaz Gomes Mascarenhas, Abdalrhman Mohamed
 -/
 
-import Smt.Reconstruct.Int.Core
+module
+
+public import Smt.Reconstruct.Int.Core
+
+@[expose] public section
 
 private theorem Int.mul_eq_zero_left {x y : Int} (hx : x ≠ 0) (hxy : x * y = 0) : y = 0 := by
   rewrite [Int.mul_eq_zero] at hxy
   exact hxy.resolve_left hx
 
-private def uncurry {p₁ p₂ p₃ : Prop} : (p₁ → p₂ → p₃) → (p₁ ∧ p₂) → p₃ := by
+private theorem uncurry {p₁ p₂ p₃ : Prop} : (p₁ → p₂ → p₃) → (p₁ ∧ p₂) → p₃ := by
   intros h₁ h₂
   have ⟨ht₁, ht₂⟩ := h₂
   exact h₁ ht₁ ht₂

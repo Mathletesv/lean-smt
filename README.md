@@ -26,6 +26,10 @@ your dependencies:
 require smt from git "https://github.com/ufmg-smite/lean-smt.git" @ "main"
 ```
 
+Alternatively, `lean-smt` has an experimental `no_mathlib` branch which can
+be accessed by replacing `main` with `no_mathlib` in your `lakefile.toml`
+or `lakefile.lean` file.
+
 ## Usage
 `lean-smt` comes with one main tactic, `smt`, that translates the current goal
 into an SMT query, sends the query to cvc5, and (if the solver returns `unsat`)

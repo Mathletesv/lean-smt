@@ -5,13 +5,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Abdalrhman Mohamed, Tomaz Gomes Mascarenhas
 -/
 
-import Smt.Reconstruct
-import Smt.Reconstruct.Builtin.Lemmas
-import Smt.Reconstruct.Real.Lemmas
-import Smt.Reconstruct.Real.Polynorm
-import Smt.Reconstruct.Real.Rewrites
-import Smt.Reconstruct.Real.TransFns
-import Smt.Reconstruct.Rewrite
+module
+
+public import Smt.Reconstruct
+public meta import Smt.Reconstruct
+public import Smt.Reconstruct.Builtin.Lemmas
+public meta import Smt.Reconstruct.Builtin.Lemmas
+public import Smt.Reconstruct.Real.Lemmas
+public meta import Smt.Reconstruct.Real.Lemmas
+public import Smt.Reconstruct.Real.Polynorm
+public meta import Smt.Reconstruct.Real.Polynorm
+public import Smt.Reconstruct.Real.Rewrites
+public meta import Smt.Reconstruct.Real.Rewrites
+public import Smt.Reconstruct.Real.TransFns
+public meta import Smt.Reconstruct.Real.TransFns
+public import Smt.Reconstruct.Rewrite
+public meta import Smt.Reconstruct.Rewrite
+
+public meta section
 
 namespace Smt.Reconstruct.Real
 
@@ -823,7 +834,7 @@ normNumFactorial (mv : MVarId) : MetaM Unit := withTraceNode `smt.reconstruct.no
   let simpTheorems : Meta.SimpTheorems ← Meta.getSimpTheorems
   let simpTheorems ← simpTheorems.addDeclToUnfold `Nat.factorial
   let ctx ← Meta.Simp.mkContext (simpTheorems := #[simpTheorems])
-  let remainingGoal? ← (Mathlib.Tactic.transformAtTarget (fun e ctx ↦ Mathlib.Meta.NormNum.deriveSimp ctx (useSimp := true) e) "norm_num" (failIfUnchanged := false) mv).run ctx
+  let remainingGoal? ← (Mathlib.Tactic.transformAtTarget (fun e ctx ↦ Mathlib.Meta.NormNum.deriveSimp ctx (useSimp := true) e) "norm_num" (ifUnchanged := .silent) mv).run ctx
   match remainingGoal? with
   | .some _ => throwError "[norm_num]: could not prove {← mv.getType}"
   | .none => pure ()
@@ -831,7 +842,7 @@ normNumAbs (mv : MVarId) : MetaM Unit := withTraceNode `smt.reconstruct.normNum 
   let simpTheorems : Meta.SimpTheorems ← Meta.getSimpTheorems
   let simpTheorems ← simpTheorems.addDeclToUnfold `abs
   let ctx ← Meta.Simp.mkContext (simpTheorems := #[simpTheorems])
-  let remainingGoal? ← (Mathlib.Tactic.transformAtTarget (fun e ctx ↦ Mathlib.Meta.NormNum.deriveSimp ctx (useSimp := true) e) "norm_num" (failIfUnchanged := false) mv).run ctx
+  let remainingGoal? ← (Mathlib.Tactic.transformAtTarget (fun e ctx ↦ Mathlib.Meta.NormNum.deriveSimp ctx (useSimp := true) e) "norm_num" (ifUnchanged := .silent) mv).run ctx
   match remainingGoal? with
   | .some _ => throwError "[norm_num]: could not prove {← mv.getType}"
   | .none => pure ()

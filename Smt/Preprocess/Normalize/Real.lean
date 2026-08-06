@@ -5,9 +5,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Abdalrhman Mohamed
 -/
 
-import Mathlib.Data.Real.Basic
-import Smt.Preprocess.Normalize.Attribute
-import Auto.MathlibReal
+module
+
+public import Mathlib.Data.Real.Basic
+public meta import Mathlib.Data.Real.Basic
+public import Smt.Preprocess.Normalize.Attribute
+public meta import Smt.Preprocess.Normalize.Attribute
+public import Auto.MathlibReal
 
 @[smt_normalize ↓]
 theorem Real.ofNat_eq_natCast (n : Nat) : Auto.MathlibReal.Real.ofNat n = n := rfl

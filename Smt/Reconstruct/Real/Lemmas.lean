@@ -5,9 +5,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Tomaz Gomes Mascarenhas, Abdalrhman Mohamed
 -/
 
-import Mathlib.Data.Real.Archimedean
+module
 
-private def uncurry {p₁ p₂ p₃ : Prop} : (p₁ → p₂ → p₃) → (p₁ ∧ p₂) → p₃ := by
+public import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+@[expose] public section
+
+private theorem uncurry {p₁ p₂ p₃ : Prop} : (p₁ → p₂ → p₃) → (p₁ ∧ p₂) → p₃ := by
   intros h₁ h₂
   have ⟨ht₁, ht₂⟩ := h₂
   exact h₁ ht₁ ht₂

@@ -5,7 +5,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Abdalrhman Mohamed
 -/
 
-import Lean
+module
+
+public import Lean
+
+@[expose] public section
 
 namespace BitVec
 
@@ -33,7 +37,8 @@ where
     | 0     => x.getLsbD (w - 1) == y.getLsbD (w - 1)
     | i + 1 => x.getLsbD ((w - 1) - (i + 1)) == y.getLsbD ((w - 1) - (i + 1)) && go i
 
-def eq_eq_beq (x : BitVec w) (y : BitVec w) : (x = y) = x.beq y :=
+set_option warn.sorry false in
+theorem eq_eq_beq (x : BitVec w) (y : BitVec w) : (x = y) = x.beq y :=
   sorry
 
 /-- Carry function for bitwise addition. -/

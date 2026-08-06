@@ -5,10 +5,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Abdalrhman Mohamed, Harun Khan
 -/
 
-import Mathlib.Data.Rat.Cast.CharZero
-import Mathlib.Data.Real.Basic
-import Mathlib.Util.AtLocation
-import Smt.Recognizers
+module
+
+public import Lean.Meta.Native
+public meta import Lean.Meta.Native
+public import Mathlib.Data.Rat.Cast.CharZero
+public meta import Mathlib.Data.Rat.Cast.CharZero
+public import Mathlib.Data.Real.Basic
+public meta import Mathlib.Data.Real.Basic
+public import Mathlib.Util.AtLocation
+public meta import Mathlib.Util.AtLocation
+public import Smt.Recognizers
+public meta import Smt.Recognizers
+
+@[expose] public section
 
 namespace Smt.Reconstruct.Real.PolyNorm
 
@@ -395,12 +405,15 @@ theorem denote_toPolynomial {e : RealExpr} : e.denote ictx rctx = e.toPolynomial
   | divConst a c ih =>
     simp only [denote, toPolynomial, Polynomial.denote_divConst, RealValExpr.eval_eq_denote, ih]
   | cast a =>
-    simpa only [denote] using IntExpr.denote_toPolynomial
+    simp only [denote]
+    exact IntExpr.denote_toPolynomial
 
 theorem denote_eq_from_toPolynomial_eq {e₁ e₂ : RealExpr} (h : e₁.toPolynomial = e₂.toPolynomial) : e₁.denote ictx rctx = e₂.denote ictx rctx := by
   rw [denote_toPolynomial, denote_toPolynomial, h]
 
 end PolyNorm.RealExpr
+
+public meta section
 
 open Lean Qq
 
@@ -521,7 +534,7 @@ def traceArithNormNum (r : Except Exception Unit) : MetaM MessageData :=
 open Mathlib.Meta.NormNum Mathlib.Tactic in
 def normNum (mv : MVarId) : MetaM Unit := withTraceNode `smt.reconstruct.normNum traceArithNormNum do
   let simpCtx ← Meta.Simp.mkContext
-  let remainingGoal? ← (transformAtTarget (fun e ctx ↦ deriveSimp ctx (useSimp := true) e) "norm_num" (failIfUnchanged := false) mv).run simpCtx
+  let remainingGoal? ← (transformAtTarget (fun e ctx ↦ deriveSimp ctx (useSimp := true) e) "norm_num" (ifUnchanged := .silent) mv).run simpCtx
   match remainingGoal? with
   | .some _ => throwError "[norm_num]: could not prove {← mv.getType}"
   | .none => pure ()
@@ -545,7 +558,11 @@ open Lean.Elab Tactic in
     Real.nativePolyNorm mv
     replaceMainGoal []
 
-end Smt.Reconstruct.Real.Tactic
+end Tactic
+
+end
+
+end Smt.Reconstruct.Real
 
 example (x y z : Real) : 1 * (x + y) * z / 4 = 1 / (2 * 2) * (z * y + x * z) := by
   poly_norm

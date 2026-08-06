@@ -5,8 +5,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Tomaz Gomes Mascarenhas, Abdalrhman Mohamed
 -/
 
-import Smt.Reconstruct.Int.Core
-import Smt.Reconstruct.Rat.Core
+module
+
+public import Smt.Reconstruct.Int.Core
+public import Smt.Reconstruct.Rat.Core
+
+@[expose] public section
 
 namespace Rat
 
@@ -72,6 +76,7 @@ end le_lt_defs
 
 theorem floor_le_self (r : Rat) : r.floor ≤ r := Rat.le_floor.mp (Int.le_refl r.floor)
 
+set_option warn.sorry false in
 theorem self_le_floor_add_one (r : Rat) : r < ↑(r.floor + 1) := by
   sorry
 

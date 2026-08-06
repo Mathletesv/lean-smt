@@ -5,9 +5,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Abdalrhman Mohamed, Wojciech Nawrocki
 -/
 
-import Std.Data.HashMap
-import Std.Data.HashSet
-import Lean.Message
+module
+
+public import Std.Data.HashMap
+public import Std.Data.HashSet
+public import Lean.Message
+
+@[expose] public section
 
 open Lean
 
@@ -62,6 +66,7 @@ where
       visitVertex u
     f v
 
+set_option linter.checkUnivs false in
 open Std.Format in
 protected def format [ToFormat α] [ToFormat β] : Format :=
   bracket "{" (joinSep (g.vertices.map formatVertex) ("," ++ line)) "}"
